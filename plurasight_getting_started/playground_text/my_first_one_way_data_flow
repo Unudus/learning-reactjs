@@ -1,0 +1,53 @@
+// video starts from jsdrops.com/rgs1.4
+
+function Button(props) {
+
+  // if you're not a fan of arrow/lambda use thats okay, but scoping rules mean you'll be largely defining your listener funcs in here only if they use scope on this level or lower. NB "handleClick()" is the convention for on-click-handlers in react.
+  //const handleClick = () => setCounter(counter+1);
+  
+	return (
+    <button onClick={props.clickHandler}>
+      +1
+    </button>
+  );
+}
+
+// Display Component, an excuse to show off sharing state.
+// Nb : convention is to call param object "props" although you technically don't have to
+function Display(props) {
+  return (
+    <div>{props.message}</div>
+  )
+}
+
+// Note you can't just chain describe ala <Button /><Display />, but you can express as an array ala [<Button /><Display />]
+
+// Since its JSX all the way down you can also just make a structure containing all the elements in question ala 
+/*
+<div>
+  <Button />
+  <Display />
+</div>
+*/
+
+// You can also use <React.fragrment >...</React.fragment> for containerless expression of multiple elements, such as outputting n-many rows of a list
+// When using fragement it's convention to use it's shortform expression of <>...</> instead, due to it being a frequently used verbose tag
+
+// Like much of coding, encapulsation is preferred over inlining whenever things repeat or get verbose. Remember it's turtles all the way down, and code always prefers to "look up" instead of "down" in scoping, so put anything shared higher in the scope tree.
+
+// Note that if you want to spread the return over multi lines its easy, but you want to encapsulate using () and NOT {}. That telegraphs it being the result of a function call and not a react object itself
+  
+function App() {
+  const [counter, setCounter] = useState(0);
+  const incCounter = () => {setCounter(counter+1)};
+  return (
+    <>
+      <Button clickHandler={incCounter}/>
+      <Display message={counter}/>
+    </> );
+}
+
+ReactDOM.render(
+  <App />, 
+  document.getElementById('mountNode'),
+);

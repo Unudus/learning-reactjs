@@ -1,0 +1,48 @@
+// jsdrops.com/rgs2.2
+// NB the guide starts with some css around but the point is to learn the React style approach and so it moot to the code in here
+
+// there's a gist full of examples CSS in JS stuff at github.com/MicheleBertoli/css-in-js 
+// Unlike "normal CSS" inlining, these can be conditional and use their JS nature to do clear bits
+
+class Card extends React.Component {
+	render() {
+    // Note here that 'style' takes a JS object which you define with {} and in these cases it's double layered because there's an object literal in the JS object itself
+    // Also note that key syntax here is the JS form, not the CSS one. so marginLeft, NOT margin-left
+  	return (
+    	<div style={{ margin: '1rem' }}>
+    	  <img src="https://placehold.it/75" />
+        <div style={{display:'inline-block',marginLeft:10}}>
+          <div style={{fontSize:'125%'}}>Name here...</div>
+          <div className="company">Company here...</div>
+        </div>
+    	</div>
+    );
+  }
+}
+
+class App extends React.Component {
+	render() {
+  	return (
+    	<div>
+    	  <div className="header">{this.props.title}</div>
+        <Card />
+    	</div>
+    );
+  }	
+}
+
+ReactDOM.render(
+	<App title="The GitHub Cards App" />,
+  mountNode,
+);
+
+//Here's an example of styling that uses a JS ternary to be non-deterministic
+class ConditionalStyle extends React.Component {
+  render() {
+    return (
+      <div style={{color:Math.random() < 0.5 ? 'azure' : 'teal'}}>
+        Like the fancy colours?
+      </div>
+    );
+  }
+}

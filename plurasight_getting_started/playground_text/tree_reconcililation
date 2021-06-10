@@ -1,0 +1,57 @@
+// starts from jsdrops.com/rgs1.7
+// this is the "HTML" way of doing things, note the use of a string expression ( using ` and NOT " or `, to make it a template string and not a string literal)
+// inlining is as simple as defining extra elements
+
+// Note as we're embedding --> JS <-- code into the template string, you use ${} not just {}
+/*
+document.getElementById('mountNode').innerHTML = `
+	<div>
+    Hello HTML
+    <input />
+    <pre>${(new Date).toLocaleTimeString()}</pre>
+  </div>
+`;
+*/
+// this is the "React" way of doing things, note that we're declaring more object-centrically
+//inlining works by adding extra elements after the 3rd as a extra parameters, ala
+/* 
+ReactDOM.render(
+  React.createElement(
+    'div', 
+    null, 
+    'Hello React',
+    React.createElement('input', null),
+    React.createElement('pre'), null, (new Date).toLocaleTimeString()
+  ),
+  document.getElementById('mountNode2'),
+);
+*/
+
+// 	currentTime: (new Date).toLocaleTimeString()
+//  setInterval(fn, 1000);
+
+
+// Here's an example where create a ticking method, running ~every second, doing what the above would only do on initial render. 
+// Note because React wants control of rendering, the "html" way of doing things can't track the contents of the input anymore, it instead gets recreated everysecond. It's all about what React is aware of, so it can work around things... smaller chunks mean less DOM regeneration.
+const render = () => {
+  document.getElementById('mountNode').innerHTML = `
+	<div>
+    Hello HTML
+    <input />
+    <pre>${(new Date).toLocaleTimeString()}</pre>
+  </div>
+`;
+  
+  ReactDOM.render(
+  React.createElement(
+    'div', 
+    null, 
+    'Hello React',
+    React.createElement('input', null),
+    React.createElement('pre'), null, (new Date).toLocaleTimeString()
+  ),
+  document.getElementById('mountNode2'),
+);
+}
+
+setInterval(render,1000);

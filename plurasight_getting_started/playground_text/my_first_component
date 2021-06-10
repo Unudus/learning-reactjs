@@ -1,0 +1,33 @@
+// Math.random();
+
+//mountNode
+//document.getElementById('mountNode').innerHTML = "hello!";
+
+// URL for this starts from jsdrops.com/rgs1.1
+
+// remember you're looking at JSX, not HTML or JS
+function Hello() {
+	return <div>Hello React!</div>;
+	// this can also be more verbosely expressed like (tag-name, attributes, child-of-element)
+	// return React.createElement('div',null,'hello react!?!?!');
+}
+
+// function to render something, first is always the component, 2nd is always the target literal DOM target
+ReactDOM.render(
+  <Hello />, 
+  document.getElementById('mountNode'),
+);
+
+//<Hello /> is the short hand way, it can be more verbosely expressed as...
+// React.createElement(Hello, null, document.getElementById('mountNode');
+
+// Button a button on the screen
+// note that the function needs to be CAPITALISED, otherwise the shorthand gets confused and will put a literal DOM tag of the same in instead
+function Button() {
+	return <button></button
+}
+
+ReactDOM.render(
+  <Button />, 
+  document.getElementById('mountNode'),
+);

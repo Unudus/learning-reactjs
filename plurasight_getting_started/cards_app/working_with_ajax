@@ -1,0 +1,100 @@
+// jsdrops.com/rgs2.6
+
+// Lesson notes : optional extra error handling not done here, and final example code is present at jsdrops.com/rgs2.7 to see the authors version of below
+
+// gaearon, sophiebits, sebmarkbage, bvaughn, unudus
+//I've left left in the references to the testData baked in, but the uncommented version of the code exclusively uses live API data. See names above
+/*
+
+const testData = [
+    {name: "Dan Abramov", avatar_url: "https://avatars0.githubusercontent.com/u/810438?v=4", company: "@facebook"},
+    {name: "Sophie Alpert", avatar_url: "https://avatars2.githubusercontent.com/u/6820?v=4", company: "Humu"},
+    {name: "Sebastian Markbåge", avatar_url: "https://avatars2.githubusercontent.com/u/63648?v=4", company: "Facebook"},
+];
+*/
+
+// Note the key={} is if it's important for the items expanded out to be uniquely referenceable. Older versions of React fired noisy warns about this, so you may see even when it's not applicable
+const CardList = (props) => (
+	<div>
+  	{props.profiles.map(profile => <Card key={profile.id} {...profile}/>)}
+	</div>
+);
+
+class Card extends React.Component {
+	render() {
+  	const profile = this.props;
+  	return (
+    	<div className="github-profile">
+    	  <img src={profile.avatar_url} />
+        <div className="info">
+          <div className="name">{profile.name}</div>
+          <div className="company">{profile.company}</div>
+        </div>
+    	</div>
+    );
+  }
+}
+
+class Form extends React.Component {
+	state = { userName: '' };
+  // don't forget, if you're doing async stuff with promises, the containing scope ( which will almost always be a function) needs async adding like here
+	handleSubmit = async (event) => {
+  	event.preventDefault();
+    
+    // use the axios lib here to fetch some bits, you'd be .fetching outside the tutorials playground but it's very similar. In "real code" you'd also very much want to have SRM-practices and not be baking in 3rd party code/async-calls in like this
+    // note we're using ${} so we need to use a template string, not a string literal. we could do this with basic string concats, but it's not as pithiy or popular in react.
+    const resp = await axios.get(`https://api.github.com/users/${this.state.userName}`);
+    
+    this.props.onSubmit(resp.data);
+    
+    // some UX niceness, clear the input once you've requested the data from the API to enforce the action
+    this.setState({userName:''});
+  };
+	render() {
+  	return (
+    	<form onSubmit={this.handleSubmit}>
+    	  <input 
+          type="text" 
+          value={this.state.userName}
+          onChange={event => this.setState({ userName: event.target.value })}
+          placeholder="GitHub username" 
+          required 
+        />
+        <button>Add card</button>
+    	</form>
+    );
+  }
+}
+
+class App extends React.Component {
+  state = {
+    //profiles: testData,
+    profiles: []
+  };
+  
+  // This is another example of "pass down" mindset. Methods defined in here can interact with the App classes state, but the children cannot. That said they _can_ be given references to methods here, so a method here can see the state, and be referenced below.
+  addNewProfile = (profileData) => {
+    // not as well known as it should be but both console.___() methods and alert() can take , separated values. It's super useful when debugging to have lean references to complex objects placed in order into the console and skips string-contact manually/programatically
+    console.log("App", profileData);
+    
+    // set the state by srpeading out the existing state into a new [] and tack the new entry on. Visually a bit syntax heavy, but given the read/write limitations the best way
+    this.setState( prevState => ({
+      profiles: [...prevState.profiles, profileData]
+    }) )
+  };
+  
+	render() {
+  	return (
+    	<div>
+    	  <div className="header">{this.props.title}</div>
+        <Form onSubmit={this.addNewProfile} />
+        <CardList profiles={this.state.profiles} />
+    	</div>
+    );
+  }	
+}
+
+ReactDOM.render(
+	<App title="The GitHub Cards App" />,
+  mountNode,
+);

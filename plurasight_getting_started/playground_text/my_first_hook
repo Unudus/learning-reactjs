@@ -1,0 +1,34 @@
+// video  starts from state jsdrops.com/rgs1.2
+
+ function logRandom() {
+  console.log(Math.random());
+}
+
+function Button() {
+  // note how the normal here is to immediately deconstruct the return, retaining the returned array isn't normal behaviour
+  // useState() takes the initial value being managed by this getter/setter pair. I'm using 1 here because there's examples of incrementing or doing math on it later, but it can be whatever primiate or complex object the logic requires
+  const [counter, setCount] = useState(1);
+  // Note that inside of {} you can drop dyanmic expressions in here, like {Math.random()} or....
+  // eventListeners can be added like vanilla HTML/JS using a similar syntax of : onCLick={funcRef}, e.g. onClick={logRandom}.
+  // Event Listeners expect a FunctionReference but can also accept lambdas/arrows like
+  /*
+  return <button onClick={() => {console.log(Math.random())}}>{counter}</button>;
+  */
+  
+  // scoping is fun, but broadly try to remember counter tracks back to the up-to-date value like a getter, rather than a in-the-moment reference.
+  
+  // Also remember : this is all declarative, we aren't managing the actual dom, repainting etc. Just declaring what happens on click and what to show where.
+  
+  // this is the version to do n+1
+  //return <button onClick={() => {setCount(counter+1)}}>{counter}</button>;
+  
+  // this would double it each time
+  //return <button onClick={() => {setCount(counter*2)}}>{counter}</button>;
+  
+	return <button onClick={() => {setCount(counter*2)}}>{counter}</button>;
+}
+
+ReactDOM.render(
+  <Button />, 
+  document.getElementById('mountNode'),
+);

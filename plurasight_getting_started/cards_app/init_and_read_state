@@ -1,0 +1,74 @@
+// jsdrops.com/rgs2.4
+
+const testData = [
+    {name: "Dan Abramov", avatar_url: "https://avatars0.githubusercontent.com/u/810438?v=4", company: "@facebook"},
+    {name: "Sophie Alpert", avatar_url: "https://avatars2.githubusercontent.com/u/6820?v=4", company: "Humu"},
+    {name: "Sebastian Markbåge", avatar_url: "https://avatars2.githubusercontent.com/u/63648?v=4", company: "Facebook"},
+];
+
+const CardList = (props) => (
+	<div>
+  	{props.profiles.map(profile => <Card {...profile}/>)}
+	</div>
+);
+
+class Card extends React.Component {
+	render() {
+  	const profile = this.props;
+  	return (
+    	<div className="github-profile">
+    	  <img src={profile.avatar_url} />
+        <div className="info">
+          <div className="name">{profile.name}</div>
+          <div className="company">{profile.company}</div>
+        </div>
+    	</div>
+    );
+  }
+}
+
+class Form extends React.Component {
+  render() {
+    return (
+      <form action="">
+        <input type='text' placeholder='github username'/>
+        <button>Add Card</button>
+      </form>
+    );
+  }
+}
+
+// Note you can technically throw together some really messy arrangements, just like with vanilla HTML. You'll need to use disipline when laying things out and choosing where to include things if it's going to be maintainable & extendable.
+
+// the same goes with where you hardcode things or create dependancies, hence the testData being passed in here
+
+class App extends React.Component {
+  // this is the older way of wrangling states in classes, un commented below it is the pithier form
+  /*
+  constructor(props) {
+    super(props); // same as any OO, if you're expecting parent constructors to fire too, you need to trigger them. First if you rely on their affects, last if you're mutating values it'll use
+    
+    this.state = { // when messing with state like this, it HAS to be an obj. No wackiness
+      profiles: testData
+    };
+  }
+  */
+  state = {
+    profiles: testData
+  };
+  
+	render() {
+  	return (
+    	<div>
+    	  <div className="header">{this.props.title}</div>
+        <Form />
+        <CardList profiles={this.state.profiles}/>
+    	</div>
+    );
+  }	
+}
+
+ReactDOM.render(
+	<App title="The GitHub Cards App" />,
+  mountNode,
+);

@@ -1,0 +1,43 @@
+// jsdrops.com/rgs2.1
+// NB there's some CSS run with this, but it's omitted since it's not part of the learning
+
+// Card
+class Card extends React.Component {
+  render() {
+    return (
+      <div className='github-profile'>
+        A Github Profile
+      </div>
+    );
+  }
+}
+// List
+
+//as a class
+class App extends React.Component {
+  
+  // anything that decends from React.Component needs a render method definition that returns the virtual DOM expression of the component the class represents
+  
+  //Note it's pulling values outta the "this." scope, since we're dealing with classes and their different differing scope usage
+  render() {
+    return (
+      <div>
+        <div className="header">{this.props.title}</div>
+        <Card />
+      </div>
+    );
+  }
+}
+
+// as a function for reference
+/*const App = ({title}) => (
+  <div className="header">{title}</div>
+);*/
+
+ReactDOM.render(
+	<App title="The GitHub Cards App" />,
+  mountNode,
+);
+
+
+
